@@ -5,7 +5,9 @@ import pyautogui
 import signal
 from pynput import keyboard
 from pynput.keyboard import Listener
+from datetime import datetime
 
+current_time = datetime.now()
 exit_event = threading.Event()
 
 def on_press(key):
@@ -38,17 +40,19 @@ def simulatedPerson():
 def func():
     t0 = time.time()
     run = True
-    print("Start Time: " + convert(t0))
+    print("Start Time: ", current_time.strftime("%H:%M:%S"))
     while run:
         for _ in range(60):
-            if time.time() - t0 > 1800 or exit_event.is_set():
+            if time.time() - t0 > 1800*3 or exit_event.is_set():
                 run = False
                 break
-            autoclk(simulatedPerson)
+            autoclk(simulatedPerson())
         if run: 
+            print("Taking a break @ ", datetime.now().strftime("%H:%M:%S"))
             time.sleep(random.choice([10,15,20,45,60]))
+            print("Resuming @ ", datetime.now().strftime("%H:%M:%S"))
         else:
-            print('Script Ended: Time Elapsed - ' + convert(time.time() - t0) + " ending @ " + convert(time.time()))
+            print('Script Ended: Time Elapsed - ' + convert(time.time() - t0) + " ending @ " + datetime.now().strftime("%H:%M:%S"))
         
         
 if __name__ == '__main__':
